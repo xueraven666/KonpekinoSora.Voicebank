@@ -7,6 +7,29 @@
 <title>コンペキノソラ［Retake-2026］</title>
 <meta name="description" content="京成線のざわめき、下町育ちの声。コンペキノソラ（セツ・ソラ）UTAU Retake-2026">
 <link rel="stylesheet" href="style.css">
+
+<style>
+  /* DOWNLOAD: keep Retake / WEIGHTLESS card rows visually balanced */
+  #download .download.equal-download-height .download-main,
+  #download .download.equal-download-height .download-side{
+    height:350px;
+  }
+
+  /* The character decoration should float inside the Retake side card,
+     not participate in the card's document flow. */
+  #download .download.equal-download-height .download-deco{
+    position:absolute;
+  }
+
+  @media(max-width:850px){
+    #download .download.equal-download-height .download-main,
+    #download .download.equal-download-height .download-side{
+      height:auto;
+      min-height:0;
+    }
+  }
+</style>
+
 </head>
 <body>
 <nav class="nav">
@@ -52,7 +75,7 @@
   <div class="wrap">
     <div class="section-head">
       <div><div class="kicker">VOICE LIBRARY</div><h2>VOICEBANK</h2></div>
-      <div class="section-note">ほかの音源も準備中です。</div>
+      <div class="section-note">追加音源「WEIGHTLESS」配布中です。</div>
     </div>
     <div class="grid">
       <div class="card span-8">
@@ -62,7 +85,7 @@
       </div>
       <div class="card span-4">
         <div class="card-label">SIDE / EXTRAS</div><div class="big">WEIGHTLESS + EVIL</div>
-        <p>６音階弱音源<br>邪悪囁き / Evil Whisper<br>グロウル / Growl</p>
+        <p>5音階表情音源「WEIGHTLESS」<br>邪悪囁き / Evil Whisper<br>グロウル / Growl</p>
       </div>
       <div class="card span-4"><div class="card-label">VOICE TYPE</div><div class="big">COLD / SHARP</div><p>冷たく鋭い、やや中性的。中音域～高音域を得意とする。</p></div>
       <div class="card span-4"><div class="card-label">LANGUAGE</div><div class="big">日本語</div><p>VCV / 連続音。UTAU・OpenUtau等で利用可能。</p></div>
@@ -172,7 +195,7 @@
       <div><div class="kicker">DISTRIBUTION</div><h2>DOWNLOAD</h2></div>
       <div class="section-note">ガッツリ配布中です。</div>
     </div>
-    <div class="download">
+    <div class="download equal-download-height">
       <div class="download-main">
         <div class="kicker">LATEST / RETAKE-2026</div>
         <h3>コンペキノソラRetake</h3>
@@ -186,6 +209,35 @@
         <div class="card-label">PACKAGE</div>
         <code>voicebank / README<br>Terms JA / ZH / EN<br>character info<br>credits</code>
         <p style="font-size:12px;color:#74809b;margin-top:18px">無断再配布禁止。制作者が3年以上完全に連絡不能となり公式配布も消失した場合のみ、規約条件下で保存目的ミラー可。</p>
+      </div>
+    </div>
+
+    <div class="download equal-download-height" id="weightless-download" style="margin-top:24px;">
+      <div class="download-main">
+        <div class="kicker">FREE DLC / EXPRESSION VOICEBANK</div>
+        <h3>WEIGHTLESS</h3>
+
+        <p>
+          泡沫のように淡く、霞がかった夢幻的で儚い、裏声ベースの5音階表情音源。<br>
+          宙に浮かぶような無重力感のある歌声で、既存音源との併用を推奨します。<br>
+          AIRY / HAZY / WEIGHTLESS / ETHEREAL
+        </p>
+
+        <a class="btn primary"
+           href="https://github.com/xueraven666/KonpekinoSora.Voicebank/releases/download/UTAU_DLC/Konpekinosora_DLC_Weightless.zip"
+           target="_blank" rel="noreferrer">
+          DOWNLOAD — FREE DLC
+        </a>
+      </div>
+
+      <div class="download-side">
+        <div class="card-label">WEIGHTLESS</div>
+        <code>5-PITCH JAPANESE VCV<br>AIRY / HAZY<br>WEIGHTLESS / ETHEREAL</code>
+
+        <p style="font-size:12px;color:#74809b;margin-top:18px">
+          コンペキノソラ［Retake］との併用を推奨。<br>
+          すでにRetake本体をお持ちの方向けの追加音源です。
+        </p>
       </div>
     </div>
   </div>
