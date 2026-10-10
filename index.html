@@ -28,6 +28,152 @@
       min-height:0;
     }
   }
+
+  /* CHARACTER GALLERY — scoped so the rest of the original site stays unchanged. */
+  #character .character-figure.character-gallery {
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    touch-action:pan-y; /* Keep vertical scrolling natural on phones. */
+    user-select:none;
+    -webkit-user-select:none;
+    cursor:grab;
+  }
+  #character .character-figure.character-gallery:active { cursor:grabbing; }
+  #character .character-figure.character-gallery:focus-visible {
+    outline:2px solid #99caff;
+    outline-offset:3px;
+  }
+  #character .character-gallery > img.character-art {
+    transition:opacity .2s ease, transform .2s ease;
+    -webkit-user-drag:none;
+    user-drag:none;
+  }
+  #character .character-gallery > img.character-art.is-changing {
+    opacity:0;
+    transform:translateX(var(--gallery-direction, 0px)) scale(.988);
+  }
+  #character .character-gallery-stamp {
+    position:absolute;
+    z-index:3;
+    left:18px;
+    top:18px;
+    padding:7px 11px;
+    border:1px solid rgba(173,197,255,.35);
+    border-radius:2px;
+    background:rgba(6,8,15,.70);
+    color:#b5c9ec;
+    font-size:10px;
+    letter-spacing:.16em;
+    font-weight:700;
+    pointer-events:none;
+  }
+  #character .character-gallery-controls {
+    position:absolute;
+    z-index:4;
+    bottom:0;
+    left:0;
+    right:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:45px 18px 18px;
+    color:#fff;
+    background:linear-gradient(to top, rgba(4,6,12,.86), rgba(4,6,12,0));
+    pointer-events:none;
+  }
+  #character .character-gallery-controls button {pointer-events:auto;}
+  #character .gallery-arrow {
+    flex:none;
+    display:grid;
+    place-items:center;
+    width:38px;
+    height:38px;
+    padding:0;
+    border:1px solid rgba(190,209,255,.60);
+    border-radius:50%;
+    background:rgba(10,15,27,.70);
+    color:#f5f7ff;
+    font-size:23px;
+    line-height:1;
+    cursor:pointer;
+    transition:background .18s, border-color .18s, transform .18s;
+  }
+  #character .gallery-arrow:hover,
+  #character .gallery-arrow:focus-visible {
+    background:#26334e;
+    border-color:#a9c9ff;
+    transform:scale(1.06);
+  }
+  #character .gallery-meta {min-width:0; text-align:center; flex:1;}
+  #character .gallery-meta-title {
+    display:block;
+    font-weight:750;
+    font-size:11px;
+    letter-spacing:.13em;
+    text-shadow:0 1px 6px #000;
+  }
+  #character .gallery-meta-sub {
+    display:block;
+    margin-top:3px;
+    font-size:10px;
+    color:#c9d0e5;
+    letter-spacing:.06em;
+  }
+  #character .gallery-dots {display:flex; justify-content:center; gap:8px; margin-top:10px;}
+  #character .gallery-dot {
+    width:8px;
+    height:8px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.7);
+    border-radius:50%;
+    background:rgba(255,255,255,.22);
+    cursor:pointer;
+  }
+  #character .gallery-dot.is-active {
+    background:#a7c7ff;
+    border-color:#a7c7ff;
+    box-shadow:0 0 8px rgba(167,199,255,.65);
+  }
+  #character .gallery-arrow:focus-visible,
+  #character .gallery-dot:focus-visible {outline:2px solid #fff; outline-offset:3px;}
+  @media(max-width:600px){
+    #character .character-gallery-stamp {top:12px;left:12px;font-size:9px;}
+    #character .character-gallery-controls {padding:40px 12px 12px; gap:8px;}
+    #character .gallery-arrow {width:34px;height:34px;font-size:21px;}
+    #character .gallery-meta-title {font-size:10px;}
+    #character .gallery-meta-sub {font-size:9px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    #character .character-gallery > img.character-art,
+    #character .gallery-arrow {transition:none;}
+  }
+
+  /* MYCOEIROINK: same two-column DOWNLOAD cards, with a slightly cheekier quote. */
+  #mycoeiroink-download .mycoe-joke {
+    margin:14px 0 0;
+    max-width:34em;
+    color:#e6e9f5;
+    font-size:17px;
+    line-height:1.8;
+    letter-spacing:.02em;
+  }
+  #mycoeiroink-download .mycoe-joke strong {color:#a9c7ff;}
+  #mycoeiroink-download .mycoe-hint {
+    color:#8291af;
+    font-size:12px;
+    line-height:1.65;
+    margin-top:14px;
+  }
+  #mycoeiroink-download .mycoe-awaiting {
+    opacity:.6;
+    cursor:not-allowed;
+    user-select:none;
+  }
+  @media(max-width:850px){
+    #mycoeiroink-download .mycoe-joke {font-size:15px;}
+  }
 </style>
 
 </head>
@@ -102,8 +248,21 @@
     </div>
 
     <div class="character-shell">
-      <div class="character-figure">
-        <img src="assets/character-base.png" alt="コンペキノソラ character full body">
+      <div class="character-figure character-gallery" id="character-gallery"
+           role="region" aria-roledescription="carousel" aria-label="コンペキノソラ立ち絵ギャラリー"
+           tabindex="0" title="左右にスワイプして立ち絵を切り替え">
+        <img class="character-art" id="character-gallery-image" src="assets/character-base.png"
+             alt="コンペキノソラ・基本立ち絵" draggable="false">
+        <div class="character-gallery-stamp" aria-hidden="true">VISUAL ARCHIVE / RETAKE</div>
+        <div class="character-gallery-controls">
+          <button class="gallery-arrow" type="button" id="gallery-prev" aria-label="前の立ち絵">&#8249;</button>
+          <div class="gallery-meta" aria-live="polite" aria-atomic="true">
+            <span class="gallery-meta-title" id="gallery-label">BASIC VISUAL</span>
+            <span class="gallery-meta-sub" id="gallery-count">01 / 03 — SWIPE TO CHANGE</span>
+            <div class="gallery-dots" id="gallery-dots" aria-label="立ち絵を選択"></div>
+          </div>
+          <button class="gallery-arrow" type="button" id="gallery-next" aria-label="次の立ち絵">&#8250;</button>
+        </div>
       </div>
       <div class="character-info">
         <div class="mag-bar">OFFICIAL BASIC VISUAL</div>
@@ -186,6 +345,15 @@
       <a class="btn" href="terms-zh.html">中文</a>
       <a class="btn" href="terms-en.html">ENGLISH</a>
     </div>
+    <div style="margin-top:24px; padding:18px 20px; border:1px solid rgba(145,173,244,.24); border-radius:12px; background:rgba(23,31,49,.42)">
+      <div class="kicker">TALK MODEL / ADDITIONAL TERMS</div>
+      <p style="margin:8px 0 12px">MYCOEIROINK 専用追加規約 — 生成音声のクレジット表記、モデルの再学習・再配布、なりすましに関する補足事項。</p>
+      <div class="buttons">
+        <a class="btn" href="terms-mycoeiroink-ja.html">MYCOEIROINK 日本語</a>
+        <a class="btn" href="terms-mycoeiroink-zh.html">MYCOEIROINK 中文</a>
+        <a class="btn" href="terms-mycoeiroink-en.html">MYCOEIROINK ENGLISH</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -240,6 +408,34 @@
         </p>
       </div>
     </div>
+
+    <!-- MYCOEIROINK / しゃべるセツ・ソラ -->
+    <div class="download equal-download-height" id="mycoeiroink-download" style="margin-top:24px;">
+      <div class="download-main">
+        <div class="kicker">TALK VOICE / MYCOEIROINK</div>
+        <h3>MYCOEIROINK</h3>
+        <p>
+          COEIROINK 向けの日本語トーク音声モデル。<br>
+          MANA 228文＋ITA 424文、計652文で学習した「のーまる」スタイル。<br>
+          歌うだけじゃなく、喋るセツ・ソラもどうぞ。
+        </p>
+        <div class="buttons">
+          <!-- TODO: 配布開始後、次の span を実際のダウンロードURL付きの a 要素に置換してください。
+               <a class="btn primary" href="ここに正式な配布URL" target="_blank" rel="noreferrer">DOWNLOAD — MYCOEIROINK</a>
+               誤ったリンクを公開しないため、現時点では無効表示です。 -->
+          <span class="btn primary mycoe-awaiting" aria-disabled="true">DOWNLOAD — 準備中</span>
+          <a class="btn" href="terms-mycoeiroink-ja.html">利用規約（JA）</a>
+        </div>
+      </div>
+      <div class="download-side">
+        <div class="card-label">どうしてこうなった</div>
+        <p class="mycoe-joke">
+          HANASUから逃げたくて録った結果が<strong>これ</strong>だよ。<br>
+          中国人の俺が日本語を喋っても、<strong>池袋弁</strong>から逃げられると思うなよ！
+        </p>
+        <p class="mycoe-hint">※「池袋弁」は中の人の自称です。生成音声のご利用前に、MYCOEIROINK専用規約をご確認ください。</p>
+      </div>
+    </div>
   </div>
 </section>
 </main>
@@ -259,6 +455,112 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* CHARACTER: swipe / mouse drag / arrow keys / button navigation.
+   To add more art later, add another { src, label, alt } entry below.
+   Images must exist in your site's assets/ directory. */
+(() => {
+  const slides = [
+    { src: 'assets/character-base.png', label: 'BASIC VISUAL', alt: 'コンペキノソラ・基本立ち絵' },
+    { src: 'assets/character-crowdkill.png', label: 'CROWDKILL', alt: 'コンペキノソラ・CROWDKILL立ち絵' },
+    { src: 'assets/character-whisper.png', label: 'WHISPER', alt: 'コンペキノソラ・WHISPER立ち絵' }
+    // Add future visuals here: { src: 'assets/character-new.png', label: 'NEW VISUAL', alt: '...' }
+  ];
+  const gallery = document.getElementById('character-gallery');
+  if (!gallery) return;
+  const img = document.getElementById('character-gallery-image');
+  const title = document.getElementById('gallery-label');
+  const count = document.getElementById('gallery-count');
+  const dots = document.getElementById('gallery-dots');
+  const prev = document.getElementById('gallery-prev');
+  const next = document.getElementById('gallery-next');
+  let current = 0;
+  let busy = false;
+  let pointerStart = null;
+  let lastWheel = 0;
+
+  const dotButtons = slides.map((slide, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'gallery-dot';
+    button.setAttribute('aria-label', `${index + 1}枚目: ${slide.label}`);
+    button.addEventListener('click', () => show(index));
+    dots.appendChild(button);
+    return button;
+  });
+
+  function updateControls() {
+    title.textContent = slides[current].label;
+    const num = String(current + 1).padStart(2, '0');
+    const total = String(slides.length).padStart(2, '0');
+    count.textContent = `${num} / ${total} — SWIPE TO CHANGE`;
+    dotButtons.forEach((b, i) => {
+      b.classList.toggle('is-active', i === current);
+      b.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
+  }
+  function show(index) {
+    const destination = (index + slides.length) % slides.length;
+    if (busy || destination === current) return;
+    busy = true;
+    const slide = slides[destination];
+    const direction = destination > current ? '-12px' : '12px';
+    const preload = new Image();
+    preload.onload = () => {
+      gallery.style.setProperty('--gallery-direction', direction);
+      img.classList.add('is-changing');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.setTimeout(() => {
+        img.src = slide.src;
+        img.alt = slide.alt;
+        current = destination;
+        updateControls();
+        gallery.style.setProperty('--gallery-direction', direction === '-12px' ? '12px' : '-12px');
+        requestAnimationFrame(() => {
+          img.classList.remove('is-changing');
+          window.setTimeout(() => { busy = false; }, reduced ? 0 : 210);
+        });
+      }, reduced ? 0 : 190);
+    };
+    preload.onerror = () => {
+      busy = false;
+      count.textContent = '画像が見つかりません — assets/ を確認';
+      console.warn('Character gallery: missing image', slide.src);
+    };
+    preload.src = slide.src;
+  }
+
+  prev.addEventListener('click', () => show(current - 1));
+  next.addEventListener('click', () => show(current + 1));
+  gallery.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      show(current + (e.key === 'ArrowRight' ? 1 : -1));
+    }
+  });
+  gallery.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('button') || !e.isPrimary) return;
+    pointerStart = { x: e.clientX, y: e.clientY, id: e.pointerId };
+  });
+  gallery.addEventListener('pointerup', (e) => {
+    if (!pointerStart || pointerStart.id !== e.pointerId) return;
+    const dx = e.clientX - pointerStart.x;
+    const dy = e.clientY - pointerStart.y;
+    pointerStart = null;
+    if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.2)
+      show(current + (dx < 0 ? 1 : -1));
+  });
+  gallery.addEventListener('pointercancel', () => { pointerStart = null; });
+  gallery.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaX) < 28 || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    const now = Date.now();
+    if (now - lastWheel < 450) return;
+    lastWheel = now;
+    show(current + (e.deltaX > 0 ? 1 : -1));
+  }, { passive: false });
+  updateControls();
+})();
 </script>
 </body>
 </html>
